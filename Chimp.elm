@@ -122,7 +122,7 @@ view address model =
         []
         [ text <| String.fromList model.register]
       , img
-        [ src "/public/img/monkey.gif" ]
+        [ src "public/img/monkey.gif" ]
         []
       ]
     , ul
