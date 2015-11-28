@@ -32,7 +32,7 @@ init =
     , nextId = 1
     , seed = Random.initialSeed 42
     , score = 0
-    , cash = 4000 -- enough to buy first monkey
+    , cash = 40 -- enough to buy first monkey
     }
   , Effects.tick Beat
   )
