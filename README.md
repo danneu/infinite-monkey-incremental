@@ -1,6 +1,6 @@
 *Proof of concept / work in progress, has glaring issues*
 
-# infinite-monkey-incremental
+# infinite-monkey-incremental ![monkey](public/img/monkey.gif)
 
 - Live demo: <https://www.danneu.com/infinite-monkey-incremental/>
 
