@@ -127,12 +127,12 @@ view address model =
       [ li
         []
         [ strong [] [ text "Cash: " ]
-        , text (toString model.cash)
+        , text ("$" ++ (Belt.commafy model.cash))
         ]
       , li
         []
         [ strong [] [ text "Score: " ]
-        , text (toString model.score)
+        , text (Belt.commafy model.score)
         ]
       ]
     ]
