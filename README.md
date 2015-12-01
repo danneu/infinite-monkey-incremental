@@ -19,3 +19,7 @@ that you can use to upgrade or buy more monkeys.
 [theorem]: https://en.wikipedia.org/wiki/Infinite_monkey_theorem
 [inc]: https://en.wikipedia.org/wiki/Incremental_game
 [screenshot]: https://dl.dropboxusercontent.com/spa/quq37nq1583x0lf/23ikl59z.png
+
+## TODO
+
+- Initialize game seed to current time on boot
