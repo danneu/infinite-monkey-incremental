@@ -25,10 +25,15 @@ type Action
   = Beat Time
   | BuyChimp
   | Modify Id Chimp.Action
+  | IncSpeed Id
 
 init : (Model, Effects Action)
 init =
-  ( { chimps = []
+  ( { -- Start with some monkeys so it's not so immediately boring
+      chimps = [ (1, Chimp.init (Random.initialSeed 1) 5)
+               , (2, Chimp.init (Random.initialSeed 2) 5)
+               , (3, Chimp.init (Random.initialSeed 3) 5)
+               ]
     , nextId = 1
     , seed = Random.initialSeed 42
     , score = 0
@@ -47,6 +52,30 @@ generateChimpSeed seed =
 update : Action -> Model -> (Model, Effects Action)
 update action model =
   case action of
+    -- Increase a monkey's speed by one
+    -- It's managed in this component since this component
+    -- manages the player's total cash
+    IncSpeed id ->
+      let
+        updateChimp (chimpId, chimpModel) =
+          if (id == chimpId) then
+            (chimpId, Chimp.update Chimp.IncSpeed chimpModel)
+          else
+            (chimpId, chimpModel)
+        newChimps = List.map updateChimp model.chimps
+
+        priceReducer (chimpId, chimpModel) price =
+          if id == chimpId then
+            Belt.calcSpeedPrice chimpModel.speed
+          else
+            price
+        speedPrice = List.foldl priceReducer 0 model.chimps
+      in
+        ({ model | chimps = newChimps
+                 , cash = model.cash - speedPrice
+         }
+        , Effects.none
+        )
     Modify id chimpAction ->
       let
         updateChimp (chimpId, chimpModel) =
@@ -62,7 +91,7 @@ update action model =
     BuyChimp ->
       let
         (chimpSeed, nextSeed) = generateChimpSeed model.seed
-        chimpModel = Chimp.init (Random.initialSeed chimpSeed)
+        chimpModel = Chimp.init (Random.initialSeed chimpSeed) 1
         nextModel =
           { model | nextId = model.nextId + 1
                   , chimps = List.append model.chimps [(model.nextId, chimpModel)]
@@ -96,15 +125,30 @@ update action model =
         , Effects.tick Beat
         )
 
-viewChimp : Address Action -> (Id, Chimp.Model) -> Html
-viewChimp address (id, model) =
-  Chimp.view (Signal.forwardTo address (Modify id)) model
+-- Need to pass total cash into each monkey view
+-- so they know when their "Upgrade" buttons are affordable
+-- and thus clickable
+viewChimp : Address Action -> Int -> (Id, Chimp.Model) -> Html
+viewChimp address cash (id, model) =
+  let
+    ctx = { actions = Signal.forwardTo address (Modify id)
+          , incSpeed = Signal.forwardTo address (always (IncSpeed id))
+          }
+  in
+    Chimp.view ctx cash model
 
 view : Address Action -> Model -> Html
 view address model =
   div
   [ class "container" ]
-  [ h1 [ class "text-center" ] [ text "Infinite Monkey Incremental" ]
+  [ h1
+    [ class "text-center"
+    , style [ "margin-top" => "100px" ]
+    ]
+    [ text "Infinite Monkey Incremental"
+    , br [] []
+    , small [] [ text "(Work in progress)" ]
+    ]
   , blockquote
     [ class "lead" ]
     [ text "The "
@@ -153,7 +197,7 @@ view address model =
                   , "margin-right" => "0px"
                   ]
           ]
-          (List.map (viewChimp address) model.chimps)
+          (List.map (viewChimp address model.cash) model.chimps)
         ]
     )
   , footer

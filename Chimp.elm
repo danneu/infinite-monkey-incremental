@@ -6,7 +6,7 @@ import Belt
 
 import Time exposing (Time)
 import Html exposing (..)
-import Html.Attributes exposing (style, class, src, classList)
+import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 import String
 import Signal exposing (Address)
@@ -29,16 +29,15 @@ type alias Model =
   , cashTotal : Int
   }
 
-init : Random.Seed -> Model
-init initSeed =
+init : Random.Seed -> Int -> Model
+init seed speed =
   let
-    speed = 1
     interval = speedToInterval speed
   in
     { register = List.repeat 15 '_'
     , interval = interval
     , prevBeat = Nothing
-    , seed = initSeed
+    , seed = seed
     , latestWords = []
     , speed = speed
     , latestWord = Nothing
@@ -110,8 +109,13 @@ update action model =
           else
             model
 
-view : Address Action -> Model -> Html
-view address model =
+type alias Context =
+  { actions : Signal.Address Action
+  , incSpeed : Signal.Address ()
+  }
+
+view : Context -> Int -> Model -> Html
+view ctx cash model =
   div
   [ class "panel panel-default col-md-3 col-sm-4 col-xs-6" ]
   [ div
@@ -131,12 +135,13 @@ view address model =
         []
         [ text <| "Speed: " ++ (toString model.speed) ++ " "
         , button
-          [ onClick address IncSpeed
+          [ onClick ctx.incSpeed ()
           , classList [ "btn" => True,
                         "disabled" => (model.speed == 10),
                         "btn-default" => True,
                         "btn-xs" => True
                       ]
+          , disabled (cash < (Belt.calcSpeedPrice model.speed))
           ]
           [ let
               cost = if model.speed == 10 then
