@@ -3,6 +3,7 @@ module Game where
 
 import Chimp
 import Belt
+import Book
 
 import Effects exposing (Effects)
 import Time exposing (Time)
@@ -12,6 +13,7 @@ import Html.Attributes exposing (..)
 import Html.Lazy exposing(..)
 import Signal exposing (Address)
 import Random
+import Debug
 
 type alias Id = Int
 type alias Model =
@@ -20,6 +22,7 @@ type alias Model =
   , seed : Random.Seed
   , score : Int
   , cash : Int
+  , book : Book.Model
   }
 
 type Action
@@ -36,7 +39,8 @@ init seed =
     , score = 0
       -- start player with enough cash for a few monkeys
       -- to avoid immediate boredom
-    , cash = 200
+    , cash = 20000
+    , book = Book.init 50
     }
   , Effects.tick Beat
   )
@@ -124,16 +128,23 @@ update action model =
           if oldModel.wordCount < newModel.wordCount then
             case List.head newModel.latestWords of
               Nothing -> memo
-              Just word -> word :: memo
+              Just word -> List.append memo [word]
           else
             memo
         newWords = (List.map2 (,) model.chimps newChimps)
                    |> List.foldl reducer []
+        newBook = if List.length newWords > 0 then
+                    Book.update
+                      (Book.AddWord (Maybe.withDefault "" (List.head newWords)))
+                      model.book
+                  else
+                    model.book
         beatScore = List.foldl (\word score -> score + Belt.scoreWord word) 0 newWords
       in
         ({ model | chimps = newChimps
                  , score = model.score + beatScore
                  , cash = model.cash + beatScore
+                 , book = newBook
          }
         , Effects.tick Beat
         )
@@ -152,6 +163,9 @@ viewChimp address cash (id, model) =
 
 view : Address Action -> Model -> Html
 view address model =
+  let
+    _ = Debug.log "rendering root view" ()
+  in
   div
   [ class "container" ]
   [ h1
@@ -171,6 +185,16 @@ view address model =
       ]
       [ strong [] [ text "infinite monkey theorem" ] ]
     , text " states that a monkey hitting keys at random on a typewriter for an infinite amount of time will almost surely type a given text, such as the complete works of William Shakespeare." ]
+
+    -- DISPLAY BOOK
+  , div
+    [ class "row" ]
+    [ div
+      [ class "col-lg-8 col-lg-offset-2" ]
+      [ (lazy Book.view model.book) ]
+    ]
+
+    -- MONKEY SECTION
   , div
     [ style [ "margin-bottom" => "20px" ] ]
     [ button
