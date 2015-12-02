@@ -13,7 +13,6 @@ import Html.Attributes exposing (..)
 import Html.Lazy exposing(..)
 import Signal exposing (Address)
 import Random
-import Debug
 
 type alias Id = Int
 type alias Model =
@@ -163,9 +162,6 @@ viewChimp address cash (id, model) =
 
 view : Address Action -> Model -> Html
 view address model =
-  let
-    _ = Debug.log "rendering root view" ()
-  in
   div
   [ class "container" ]
   [ h1

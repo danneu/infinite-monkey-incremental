@@ -66,12 +66,6 @@ update action model =
 
 viewPage : Bool -> Page -> Html
 viewPage isLeft page =
-  let
-    _ = if isLeft then
-          Debug.log "rendering leftPage"  ()
-        else
-          Debug.log "rendering rightPage"  ()
-  in
   div
   []
   [ div
