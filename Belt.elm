@@ -3,7 +3,6 @@ module Belt where
 
 import String
 import Regex exposing (regex)
-import Graphics.Element exposing (show)
 
 scoreWord : String -> Int
 scoreWord word =
