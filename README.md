@@ -24,6 +24,7 @@ that you can use to upgrade or buy more monkeys.
 
 - Consider basing speed price on total speed sum instead of on a per-chimp basis.
 - Come up with actual, deliberate price growth formulas that scale well.
+- Auto-load/-unload state from localStorage.
 
 ## Notes to self
 
@@ -32,3 +33,26 @@ that you can use to upgrade or buy more monkeys.
 button clicks while the UI hangs) will always result in the player purchasing
 upgrades they couldn't otherwise afford which will also result in a negative
 cash balance.
+
+## Build
+
+### For development:
+
+Start local server:
+
+    python -m SimpleHTTPServer 5000
+
+Build index.html and elm.js:
+
+    npm run build
+
+Navigate to <http://localhost:5000>.
+
+### For production:
+
+    git checkout --orphan gh-pages
+    npm run build
+    rm .gitignore
+    git add index.html public elm.js
+    git commit -m 'Build'
+    git push origin
