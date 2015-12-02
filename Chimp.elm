@@ -183,7 +183,10 @@ generateChar seed =
 detectWord : String -> Maybe String
 detectWord register =
   let
-    --re = Regex.regex "^abc|^def"
+    -- NOTE: Due to apparent laziness, Elm will wait til this is called the first
+    -- time (i.e. when first monkey spawns) before loading the massive
+    -- Words.re regex, so the first monkey spawn hangs the UI for a second or
+    -- few.
     matches = Regex.find (Regex.AtMost 1) Words.re register
   in
     case List.head matches of
