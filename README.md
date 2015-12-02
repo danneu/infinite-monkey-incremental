@@ -26,7 +26,7 @@ that you can use to upgrade or buy more monkeys.
 - Come up with actual, deliberate price growth formulas that scale well.
 - Auto-load/-unload state from localStorage.
 - Automate cache-busting fingerprinting on index.html and elm.js during deploy step.
-- Instead of Effects.tick, consider 60 fps or really whatever resolution is minimal but sensible
+- Instead of Effects.tick, slower fps
 
 ## Notes to self
 
