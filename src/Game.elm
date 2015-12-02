@@ -222,7 +222,9 @@ view address model =
       []
       [ text "Source code at "
       , a
-        [ href "https://github.com/danneu/infinite-monkey-incremental" ]
+        [ href "https://github.com/danneu/infinite-monkey-incremental"
+        , target "_blank"
+        ]
         [ text "danneu/infinite-monkey-incremental" ]
       ]
     ]

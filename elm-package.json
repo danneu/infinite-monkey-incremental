@@ -4,7 +4,7 @@
   "repository": "https://github.com/danneu/infinite-monkey-incremental.git",
   "license": "BSD3",
   "source-directories": [
-    "."
+    "src"
   ],
   "native-modules": true,
   "exposed-modules": [],
