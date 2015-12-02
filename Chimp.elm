@@ -10,7 +10,6 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 import String
 import Signal exposing (Address)
---import Effects exposing (Effects)
 import Random
 import Char
 import Regex
