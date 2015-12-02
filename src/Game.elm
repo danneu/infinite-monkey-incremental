@@ -38,7 +38,7 @@ init seed =
     , score = 0
       -- start player with enough cash for a few monkeys
       -- to avoid immediate boredom
-    , cash = 20000
+    , cash = 200
     , book = Book.init 50
     }
   , Effects.tick Beat
@@ -163,27 +163,9 @@ viewChimp address cash (id, model) =
 view : Address Action -> Model -> Html
 view address model =
   div
-  [ class "container" ]
-  [ h1
-    [ class "text-center"
-    , style [ "margin-top" => "100px" ]
-    ]
-    [ text "Infinite Monkey Incremental"
-    , br [] []
-    , small [] [ text "(Work in progress)" ]
-    ]
-  , blockquote
-    [ class "lead" ]
-    [ text "The "
-    , a
-      [ href "https://en.wikipedia.org/wiki/Infinite_monkey_theorem"
-      , target "_blank"
-      ]
-      [ strong [] [ text "infinite monkey theorem" ] ]
-    , text " states that a monkey hitting keys at random on a typewriter for an infinite amount of time will almost surely type a given text, such as the complete works of William Shakespeare." ]
-
-    -- DISPLAY BOOK
-  , div
+  []
+  [ -- DISPLAY BOOK
+    div
     [ class "row" ]
     [ div
       [ class "col-lg-8 col-lg-offset-2" ]

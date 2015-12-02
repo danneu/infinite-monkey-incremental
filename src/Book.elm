@@ -79,18 +79,25 @@ viewPage isLeft page =
 view : Model -> Html
 view model =
   div
-  [ class "panel panel-default"
-  , style [ "font-family" => "serif" ]
-  ]
+  [ class "panel panel-default" ]
   [ div
-    [ class "panel-body" ]
+    [ class "panel-heading" ]
+    [ span
+      [ style [ "font-style" => "italic" ] ]
+      [ text "Wrath of the Monkey" ]
+    , text " by Dan Brown"
+    ]
+  , div
+    [ class "panel-body"
+    , style [ "font-family" => "serif" ]
+    ]
     [ div
       [ class "row" ]
       [ div
-        [ class "col-lg-6" ]
+        [ class "col-sm-6" ]
         [ (lazy2 viewPage True model.left) ]
       , div
-        [ class "col-lg-6"
+        [ class "col-sm-6"
         , style [ "border-left" => "1px solid #ccc" ]
         ]
         [ (lazy2 viewPage False model.right) ]
