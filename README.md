@@ -25,6 +25,7 @@ that you can use to upgrade or buy more monkeys.
 - Consider basing speed price on total speed sum instead of on a per-chimp basis.
 - Come up with actual, deliberate price growth formulas that scale well.
 - Auto-load/-unload state from localStorage.
+- Automate cache-busting fingerprinting on index.html and elm.js during deploy step.
 
 ## Notes to self
 
