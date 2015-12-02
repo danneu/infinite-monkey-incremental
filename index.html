@@ -1,0 +1,54 @@
+<!doctype html>
+<head>
+  <title>infinite-monkey-incremental</title>
+  <link rel="stylesheet" href="public/vendor/bootstrap-3.3.5-dist/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="public/vendor/bootstrap-3.3.5-dist/css/bootstrap-theme.min.css" >
+  <style>
+   body {
+     padding-top: 20px;
+   }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="text-center">
+      Infinite Monkey Incremental
+      <br><small>(Work in progress)</small>
+    </h1>
+    <blockquote>
+      The
+      <a href="https://en.wikipedia.org/wiki/Infinite_monkey_theorem" target="_blank">
+        <strong>infinite monkey theorem</strong>
+      </a>
+      states that a monkey hitting keys at random on a typewriter for an infinite amount of time will almost surely type a given text, such as the complete works of William Shakespeare.
+    </blockquote>
+
+    <hr>
+
+    <!-- Briefing -->
+
+    <p>
+      You are an underpaid underwriter for Dan Brown novels, and you've had enough
+      of the low pay and the soul-sucking work. Last week at the water
+      cooler, your co-worker Chuck, at his wit's end, makes the joke
+      "even a monkey could please our editors", and it gives you your next big idea:
+    </p>
+    <p>
+      It's time to subcontract.
+    </p>
+    <p>
+      Carving out some space in your corner of the Dan Brown underwriter
+      sweatshop, you set up little desks with little chairs that slide under
+      little typewriters. You save up enough to buy your first monkey and put it
+      to work on the next Dan Brown book...
+    </p>
+
+    <hr>
+
+    <div id="app"></div>
+  </div>
+</body>
+<script src="elm-0.js"></script>
+<script type="text/javascript">
+  Elm.embed(Elm.Main, document.getElementById('app'))
+</script>
