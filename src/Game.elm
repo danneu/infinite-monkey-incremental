@@ -9,6 +9,7 @@ import Time exposing (Time)
 import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
+import Html.Lazy exposing(..)
 import Signal exposing (Address)
 import Random
 
@@ -209,7 +210,7 @@ view address model =
                   , "margin-right" => "0px"
                   ]
           ]
-          (List.map (viewChimp address model.cash) model.chimps)
+          (List.map (lazy3 viewChimp address model.cash) model.chimps)
         ]
     )
   , footer
