@@ -57,4 +57,4 @@ Navigate to <http://localhost:5000>.
     rm .gitignore
     git add index.html public elm.js
     git commit -m 'Build'
-    git push origin
+    git push origin -f
