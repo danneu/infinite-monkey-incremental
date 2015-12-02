@@ -22,4 +22,13 @@ that you can use to upgrade or buy more monkeys.
 
 ## TODO
 
-- Initialize game seed to current time on boot
+- Consider basing speed price on total speed sum instead of on a per-chimp basis.
+- Come up with actual, deliberate price growth formulas that scale well.
+
+## Notes to self
+
+- Always ensure that player can afford a given upgrade inside Game's
+`update` function. If not, then enqueuing multiple actions (like spamming
+button clicks while the UI hangs) will always result in the player purchasing
+upgrades they couldn't otherwise afford which will also result in a negative
+cash balance.

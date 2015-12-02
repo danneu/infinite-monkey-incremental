@@ -27,17 +27,15 @@ type Action
   | Modify Id Chimp.Action
   | IncSpeed Id
 
-init : (Model, Effects Action)
-init =
-  ( { -- Start with some monkeys so it's not so immediately boring
-      chimps = [ (1, Chimp.init (Random.initialSeed 1) 5)
-               , (2, Chimp.init (Random.initialSeed 2) 5)
-               , (3, Chimp.init (Random.initialSeed 3) 5)
-               ]
+init : Random.Seed -> (Model, Effects Action)
+init seed =
+  ( { chimps = []
     , nextId = 1
-    , seed = Random.initialSeed 42
+    , seed = seed
     , score = 0
-    , cash = 40 -- enough to buy first monkey
+      -- start player with enough cash for a few monkeys
+      -- to avoid immediate boredom
+    , cash = 200
     }
   , Effects.tick Beat
   )
@@ -57,6 +55,18 @@ update action model =
     -- manages the player's total cash
     IncSpeed id ->
       let
+        priceReducer (chimpId, chimpModel) price =
+          if id == chimpId then
+            Belt.calcSpeedPrice chimpModel.speed
+          else
+            price
+        speedPrice = List.foldl priceReducer 0 model.chimps
+      in
+      -- ensure user can afford the upgrade, first
+      if model.cash < speedPrice then
+        (model, Effects.none)
+      else
+      let
         updateChimp (chimpId, chimpModel) =
           if (id == chimpId) then
             (chimpId, Chimp.update Chimp.IncSpeed chimpModel)
@@ -64,12 +74,6 @@ update action model =
             (chimpId, chimpModel)
         newChimps = List.map updateChimp model.chimps
 
-        priceReducer (chimpId, chimpModel) price =
-          if id == chimpId then
-            Belt.calcSpeedPrice chimpModel.speed
-          else
-            price
-        speedPrice = List.foldl priceReducer 0 model.chimps
       in
         ({ model | chimps = newChimps
                  , cash = model.cash - speedPrice
@@ -90,8 +94,16 @@ update action model =
         )
     BuyChimp ->
       let
+        monkeyPrice = Belt.calcMonkeyPrice << List.length <| model.chimps
+      in
+      -- ensure user can afford the upgrade, first
+      if model.cash < monkeyPrice then
+        (model, Effects.none)
+      else
+      let
         (chimpSeed, nextSeed) = generateChimpSeed model.seed
-        chimpModel = Chimp.init (Random.initialSeed chimpSeed) 1
+        -- Start at init speed of 5 to make things more immediately interesting
+        chimpModel = Chimp.init (Random.initialSeed chimpSeed) 5
         nextModel =
           { model | nextId = model.nextId + 1
                   , chimps = List.append model.chimps [(model.nextId, chimpModel)]
