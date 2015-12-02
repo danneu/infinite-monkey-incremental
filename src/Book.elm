@@ -53,8 +53,8 @@ update action model =
           { model | right = { oldRight | words = List.append oldRight.words [word] } }
       else -- both pages full
         let
-          newLeftPageNum = model.left.pageNum + 1
-          newRightPageNum = model.right.pageNum + 1
+          newLeftPageNum = model.left.pageNum + 2
+          newRightPageNum = model.right.pageNum + 2
           newRightPage = initPage newRightPageNum []
           newLeftPage = initPage newLeftPageNum [word]
         in
