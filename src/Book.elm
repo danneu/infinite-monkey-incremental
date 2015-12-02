@@ -28,7 +28,7 @@ type alias Model =
 
 init : Int -> Model
 init wordsPerPage =
-  { left = initPage 1 []
+  { left = initPage 1 ["Once", "upon", "a", "time,"]
   , right = initPage 2 []
   , wordsPerPage = wordsPerPage
   }
