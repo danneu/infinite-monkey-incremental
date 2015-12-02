@@ -175,12 +175,21 @@ view address model =
     -- MONKEY SECTION
   , div
     [ style [ "margin-bottom" => "20px" ] ]
-    [ button
+    [ let
+        -- : Int
+        monkeyPrice = Belt.calcMonkeyPrice << List.length <| model.chimps
+        -- : Bool
+        canAffordMonkey = model.cash >= monkeyPrice
+      in
+      button
       [ onClick address BuyChimp
-      , class "btn btn-success"
-      , disabled (model.cash < (Belt.calcMonkeyPrice << List.length <| model.chimps))
+      , classList [ "btn" => True
+                  , "btn-success" => canAffordMonkey
+                  , "btn-default" => not canAffordMonkey
+                  ]
+      , disabled (not canAffordMonkey)
       ]
-      [ text <| "Buy Chimp ($" ++ (Belt.commafy << Belt.calcMonkeyPrice << List.length) model.chimps ++ ")" ]
+      [ text <| "Buy Chimp ($" ++ (Belt.commafy monkeyPrice) ++ ")" ]
     , ul
       [ class "list-inline lead pull-right" ]
       [ li

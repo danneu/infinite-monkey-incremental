@@ -133,20 +133,27 @@ view ctx cash model =
       [ li
         []
         [ text <| "Speed: " ++ (toString model.speed) ++ " "
-        , button
+        , let
+            -- : Int
+            speedPrice = Belt.calcSpeedPrice model.speed
+            -- : Bool
+            canAffordSpeed = cash >= speedPrice
+          in
+          button
           [ onClick ctx.incSpeed ()
           , classList [ "btn" => True,
                         "disabled" => (model.speed == 10),
-                        "btn-default" => True,
+                        "btn-success" => canAffordSpeed,
+                        "btn-default" => not canAffordSpeed,
                         "btn-xs" => True
                       ]
-          , disabled (cash < (Belt.calcSpeedPrice model.speed))
+          , disabled (not canAffordSpeed)
           ]
           [ let
               cost = if model.speed == 10 then
                        "Max"
                      else
-                       "$" ++ (toString << Belt.calcSpeedPrice) model.speed
+                       "$" ++ (toString speedPrice)
             in
               text ("Upgrade (" ++ cost ++ ")")
           ]
