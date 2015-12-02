@@ -198,7 +198,7 @@ view address model =
       , class "btn btn-success"
       , disabled (model.cash < (Belt.calcMonkeyPrice << List.length <| model.chimps))
       ]
-      [ text <| "Buy Chimp ($" ++ (toString << Belt.calcMonkeyPrice << List.length) model.chimps ++ ")" ]
+      [ text <| "Buy Chimp ($" ++ (Belt.commafy << Belt.calcMonkeyPrice << List.length) model.chimps ++ ")" ]
     , ul
       [ class "list-inline lead pull-right" ]
       [ li
